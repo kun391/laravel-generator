@@ -1,0 +1,24 @@
+<?php
+
+namespace {{namespace}}\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class {{class}} extends Model
+{
+    /**
+     * The database table used by the model.
+     *
+     * @var string
+     */
+    protected $table = '{{tableName}}';
+
+    /**
+     * Attributes that should be mass-assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        {{model_fields}}
+    ];
+}

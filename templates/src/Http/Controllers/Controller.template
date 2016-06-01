@@ -1,0 +1,49 @@
+<?php
+
+namespace {{namespace}}\Http\Controllers;
+
+use App\Http\Controllers\Controller;
+
+/**
+ * Class {{class}}
+ */
+class {{class}} extends Controller
+{
+
+    /**
+     * @return mixed
+     */
+    public function index()
+    {
+
+    }
+
+    /**
+     * @param  StoreUserRequest $request
+     * @return mixed
+     */
+    public function store(StoreUserRequest $request)
+    {
+
+    }
+
+    /**
+     * @param  $id
+     * @param  UpdateUserRequest $request
+     * @return mixed
+     */
+    public function update($id, UpdateUserRequest $request)
+    {
+
+    }
+
+    /**
+     * @param  $id
+     * @param  DeleteUserRequest $request
+     * @return mixed
+     */
+    public function destroy($id, DeleteUserRequest $request)
+    {
+
+    }
+}

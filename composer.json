@@ -1,0 +1,52 @@
+{
+    "name": "kun391/laravel-categories",
+    "type": "library",
+    "description": "Package categories with with trees",
+    "keywords": [
+        "Kun",
+        "Categories",
+        "framework",
+        "laravel",
+        "categories",
+        "tree"
+    ],
+    "homepage": "https://github.com/kun391/Categories",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Thanh Nguyen",
+            "email": "nguyentruongthanh.dn@gmail.com",
+            "homepage": "http://github.com/kun391",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "illuminate/support": "~5.2",
+        "laravelcollective/html": "5.2.*",
+        "php" : "~5.5|~7.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit" : "4.*",
+        "scrutinizer/ocular": "~1.1",
+        "squizlabs/php_codesniffer": "~2.3",
+        "orchestra/testbench": "~3.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Kun\\Generator\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "classmap": [
+            "tests/TestCase.php"
+        ]
+    },
+    "scripts": {
+        "test": "phpunit"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
+}
