@@ -1,13 +1,12 @@
 <?php
 namespace Kun\Generator\Commands;
-use Illuminate\Console\AppNamespaceDetectorTrait;
 use Illuminate\Filesystem\Filesystem;
 use Kun\Generator\Traits\CommandTrait;
 use Kun\Generator\Commands\Generate;
 use Kun\Generator\Commands\GenerateCommand;
 class GenerateController extends Generate
 {
-    use AppNamespaceDetectorTrait, CommandTrait;
+    use CommandTrait;
     protected $object;
 
     function __construct(GenerateCommand $generateCommand, Filesystem $files)
@@ -49,8 +48,7 @@ class GenerateController extends Generate
         $content = $this->files->get(__DIR__ . '/../../templates/src/Http/Controllers/Controller.template');
         $this->replaceClassName($content)
             ->replaceNameSpace($content)
-            ->replaceModelName($content)
-            ->replaceSchema($content, 'controller');
+            ->replaceModelName($content);
         return $content;
     }
     /**
@@ -86,23 +84,6 @@ class GenerateController extends Generate
         $content = str_replace('{{model_name_class}}', $model_name_uc, $content);
         $content = str_replace('{{model_name_var_sgl}}', $model_name, $content);
         $content = str_replace('{{model_name_var}}', $model_names, $content);
-        return $this;
-    }
-    /**
-     * Replace the schema for the stub.
-     *
-     * @param  string $stub
-     * @param string $type
-     * @return $this
-     */
-    protected function replaceSchema(&$stub, $type = 'migration')
-    {
-        if ($schema = $this->object->option('schema')) {
-            $schema = (new SchemaParser)->parse($schema);
-        }
-        // Create controllers fields
-        // $schema = (new SyntaxBuilder)->create($schema, $this->object->getMeta(), 'controller');
-        $stub = str_replace('{{model_fields}}', $schema, $stub);
         return $this;
     }
 }

@@ -174,39 +174,6 @@ class GenerateCommand extends Command
         new GenerateStoreRequest($this, $this->files);
         new GenerateUpdateRequest($this, $this->files);
     }
-
-    /**
-     * Setup views and assets
-     *
-     */
-    private function makeViews()
-    {
-        foreach ($this->views as $view) {
-            // index, create, show, edit
-            new MakeView($this, $this->files, $view);
-        }
-        $this->info('Views created successfully.');
-        $this->info('Dump-autoload...');
-        $this->composer->dumpAutoloads();
-        $this->info('Route::resource("'.$this->getObjName("names").'","'.$this->getObjName("Name").'Controller"); // Add this line in routes.php');
-    }
-    /**
-     * Make a layout.blade.php with bootstrap
-     *
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
-     */
-    private function makeViewLayout()
-    {
-        new MakeLayout($this, $this->files);
-    }
-    /**
-     * Get access to $meta array
-     * @return array
-     */
-    public function getMeta()
-    {
-        return $this->meta;
-    }
     /**
      * Generate names
      *
