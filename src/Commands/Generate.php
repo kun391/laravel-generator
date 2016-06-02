@@ -6,24 +6,9 @@ use Kun\Generator\Commands\IGenerate;
 
 class Generate implements IGenerate
 {
-    public function typeName()
-    {
-        return;
-    }
-    public function start()
-    {
-        return;
-    }
-    public function compileTemplate()
-    {
-        return;
-    }
-    public function replaceClassName(&$pathTemplate)
-    {
-        return;
-    }
-    public function replaceNameSpace(&$pathTemplate)
-    {
-        return;
-    }
+    public function typeName() {}
+    public function start() {}
+    public function compileTemplate() {}
+    public function replaceClassName(&$pathTemplate) {}
+    public function replaceNameSpace(&$pathTemplate) {}
 }

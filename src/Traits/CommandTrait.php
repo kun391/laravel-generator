@@ -10,17 +10,6 @@ trait CommandTrait {
      *
      * @var Filesystem
      */
-    protected $files;
-    protected $gmCommand;
-    /**
-     * @param GenerateCommand $generateCommand
-     * @param Filesystem $files
-     */
-    public function __construct(GenerateCommand $generateCommand, Filesystem $files){
-        $this->files = $files;
-        $this->gmCommand = $generateCommand;
-        $this->generateNames($generateCommand);
-    }
     /**
      * Get the path to where we should store the controller.
      *
@@ -28,26 +17,25 @@ trait CommandTrait {
      * @param string $path
      * @return string
      */
-    protected function getPath($file_name, $packageName, $fileType, $pathPackage) {
+    protected function getPath($file_name, $packageName, $fileType, $pathPackage)
+    {
         $baseSrc = $pathPackage . '/' . $packageName . '/src';
-
         if ($fileType == 'controller') {
-            return $baseSrc .'/Http/Controllers/' . $file_name . '.php';
-        } elseif($fileType == 'model'){
-            return $baseSrc . '/Models/' . $file_name. '.php';
-        } elseif($fileType == 'config'){
-            return $baseSrc . '/config/' . $file_name. '.php';
-        } elseif($fileType == 'route'){
-            return $baseSrc . '/' . $file_name. '.php';
-        } elseif($fileType == 'migration') {
-            return $baseSrc . '/database/migrations/' . $file_name. '.php';
-        } elseif($fileType == 'request') {
-            return $baseSrc . '/Http/Requests/' . $file_name. '.php';
-        } elseif($fileType == 'provider') {
-            return $baseSrc . '/' . $file_name. '.php';
-        } elseif($fileType == 'view') {
-            return '/resources/views/'.$file_name.'/index.blade.php';
+            $baseSrc = $baseSrc .'/Http/Controllers/' . $file_name . '.php';
+        } elseif ($fileType == 'model') {
+            $baseSrc = $baseSrc . '/Models/' . $file_name. '.php';
+        } elseif ($fileType == 'config') {
+            $baseSrc = $baseSrc . '/config/' . $file_name. '.php';
+        } elseif ($fileType == 'route') {
+            $baseSrc = $baseSrc . '/' . $file_name. '.php';
+        } elseif ($fileType == 'migration') {
+            $baseSrc = $baseSrc . '/database/migrations/' . $file_name. '.php';
+        } elseif ($fileType == 'request') {
+            $baseSrc = $baseSrc . '/Http/Requests/' . $file_name. '.php';
+        } elseif ($fileType == 'provider') {
+            $baseSrc = $baseSrc . '/' . $file_name. '.php';
         }
+        return $baseSrc;
     }
     /**
      * Build the directory for the class if necessary.

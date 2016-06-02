@@ -32,6 +32,7 @@ class GeneralTest extends TestCase {
     public function testValidCommand()
     {
         $artisan = Artisan::call('generator:run', ['name' => 'admins', 'dir' => './packages', 'namespace' => 'Kun\Admins']);
+        $artisan = Artisan::call('generator:run', ['name' => 'admins', 'dir' => './packages', 'namespace' => 'Kun\Admins']);
         $this->assertTrue(file_exists('./packages/'. 'Admins' . '/src/Http/Controllers/AdminController.php'));
         $this->assertTrue(file_exists('./packages/'. 'Admins' . '/src/Http/Requests/AdminStoreRequest.php'));
         $this->assertTrue(file_exists('./packages/'. 'Admins' . '/src/Http/Requests/AdminUpdateRequest.php'));

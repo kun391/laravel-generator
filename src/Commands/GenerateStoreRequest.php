@@ -1,12 +1,11 @@
 <?php
 namespace Kun\Generator\Commands;
-use Illuminate\Console\AppNamespaceDetectorTrait;
 use Illuminate\Filesystem\Filesystem;
 use Kun\Generator\Traits\CommandTrait;
 use Kun\Generator\Commands\GenerateCommand;
 
 class GenerateStoreRequest extends Generate {
-    use AppNamespaceDetectorTrait, CommandTrait;
+    use CommandTrait;
     protected $object;
 
     function __construct(GenerateCommand $generateCommand, Filesystem $files)
