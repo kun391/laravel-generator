@@ -1,6 +1,6 @@
 # Laravel Generator
 
-[![Latest Stable Version](https://poser.pugx.org/kun391/laravel-categories/v/stable)](https://packagist.org/packages/kun391/laravel-categories) [![Total Downloads](https://poser.pugx.org/kun391/laravel-categories/downloads)](https://packagist.org/packages/kun391/laravel-categories) [![Latest Unstable Version](https://poser.pugx.org/kun391/laravel-categories/v/unstable)](https://packagist.org/packages/kun391/laravel-categories) [![License](https://poser.pugx.org/kun391/laravel-categories/license)](https://packagist.org/packages/kun391/laravel-categories)
+[![Latest Stable Version](https://poser.pugx.org/kun391/laravel-generator/v/stable)](https://packagist.org/packages/kun391/laravel-generator) [![Total Downloads](https://poser.pugx.org/kun391/laravel-generator/downloads)](https://packagist.org/packages/kun391/laravel-generator) [![Latest Unstable Version](https://poser.pugx.org/kun391/laravel-generator/v/unstable)](https://packagist.org/packages/kun391/laravel-generator) [![License](https://poser.pugx.org/kun391/laravel-generator/license)](https://packagist.org/packages/kun391/laravel-generator)
 
 The package use to generate a module with JSONAPI spec.
 
@@ -31,10 +31,12 @@ Then register service provider with in config/app.php:
 
 and add alias Input to aliases
 
+```
 'aliases' => [
     ...
     'Input' => Illuminate\Support\Facades\Input::class,
 ]
+```
 
 ## Usage
 

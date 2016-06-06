@@ -6,7 +6,7 @@
         "scaffold",
         "packages",
         "laravel",
-        "crud",
+        "crud"
     ],
     "homepage": "https://github.com/kun391/laravel-generator",
     "license": "MIT",
