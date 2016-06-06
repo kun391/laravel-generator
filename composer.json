@@ -1,16 +1,14 @@
 {
-    "name": "kun391/laravel-categories",
+    "name": "kun391/laravel-generator",
     "type": "library",
-    "description": "Package categories with with trees",
+    "description": "The package use to generate a module with JSONAPI spec",
     "keywords": [
-        "Kun",
-        "Categories",
-        "framework",
+        "scaffold",
+        "packages",
         "laravel",
-        "categories",
-        "tree"
+        "crud"
     ],
-    "homepage": "https://github.com/kun391/Categories",
+    "homepage": "https://github.com/kun391/laravel-generator",
     "license": "MIT",
     "authors": [
         {

@@ -21,4 +21,21 @@ class {{class}} extends Model
     protected $fillable = [
         {{model_fields}}
     ];
+
+    /**
+     *
+     * @param  array  $options
+     * @return array
+     */
+    public static function browse($options = [])
+    {
+        $query = {{class}}::orderBy('id', 'DESC');
+
+        return $query->paginate(
+            $perPage = $options['size'],
+            $columns = ['*'],
+            $pageName = 'page[number]',
+            $page = $options['number']
+        );
+    }
 }

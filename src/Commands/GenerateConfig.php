@@ -20,24 +20,29 @@ class GenerateConfig {
         return 'config';
     }
 
+    public function templatePath()
+    {
+        return __DIR__ . '/../../templates/src/config/config.template';
+    }
+
     public function compileTemplate()
     {
-        $content = $this->files->get(__DIR__ . '/../../templates/src/config/config.template');
+        $content = $this->files->get($this->templatePath());
         return $content;
     }
 
     public function start()
     {
         $name = $this->object->getObjName('name');
-        $packageName = $this->object->getObjName('Names');
-        $packagePath = $this->object->argument('dir');
+        $packageName = $this->object->option('namespace');
+        $packagePath = $this->object->option('dir');
 
         $modelPath = $this->getPath($name, $packageName, $this->typeName(), $packagePath);
 
         if (!$this->files->exists($modelPath)) {
             $this->makeFile($modelPath);
         }
-        $this->files->put($modelPath, $this->compileTemplate(__DIR__ . '/../../templates/src/config/config.template'));
+        $this->files->put($modelPath, $this->compileTemplate());
         $this->object->info('Config created successfully.');
     }
 }

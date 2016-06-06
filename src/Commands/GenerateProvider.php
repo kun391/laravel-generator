@@ -20,9 +20,19 @@ class GenerateProvider extends Generate {
         return 'provider';
     }
 
+    public function className()
+    {
+        return $this->object->getObjName('Name') . 'ServiceProvider';
+    }
+
+    public function templatePath()
+    {
+        return __DIR__ . '/../../templates/src/ServiceProvider.template';
+    }
+
     public function  compileTemplate()
     {
-        $content = $this->files->get(__DIR__ . '/../../templates/src/ServiceProvider.template');
+        $content = $this->files->get($this->templatePath());
         $this->replaceClassName($content)
             ->replaceNameSpace($content)
             ->replaceVariable($content);
@@ -36,7 +46,7 @@ class GenerateProvider extends Generate {
      */
     public function replaceClassName(&$content)
     {
-        $className = $this->object->getObjName('Name') . 'ServiceProvider';
+        $className = $this->className();
         $content = str_replace('{{class}}', $className, $content);
         return $this;
     }
@@ -49,7 +59,7 @@ class GenerateProvider extends Generate {
      */
     public function replaceNameSpace(&$content)
     {
-        $nameSpace = $this->object->argument('namespace');
+        $nameSpace = $this->object->option('namespace');
         $content = str_replace('{{namespace}}', $nameSpace, $content);
         return $this;
     }
@@ -71,16 +81,16 @@ class GenerateProvider extends Generate {
 
     public function start()
     {
-        $name = $this->object->getObjName('Name') . 'ServiceProvider';
-        $packageName = $this->object->getObjName('Names');
-        $packagePath = $this->object->argument('dir');
+        $name = $this->className();
+        $packageName = $this->object->option('namespace');
+        $packagePath = $this->object->option('dir');
 
         $modelPath = $this->getPath($name, $packageName, $this->typeName(), $packagePath);
 
         if (!$this->files->exists($modelPath)) {
             $this->makeFile($modelPath);
         }
-        $this->files->put($modelPath, $this->compileTemplate(__DIR__ . '/../../templates/src/ServiceProvider.template'));
+        $this->files->put($modelPath, $this->compileTemplate());
         $this->object->info('Provider created successfully.');
     }
 }
