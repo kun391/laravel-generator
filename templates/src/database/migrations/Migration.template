@@ -12,7 +12,11 @@ class {{class}} extends Migration {
 	 */
 	public function up()
 	{
-		{{schema_up}}
+		Schema::create('{{table}}', function(Blueprint $table) {
+            $table->increments('id');
+            {{schema_up}}
+            $table->timestamps();
+        });
 	}
 
 	/**

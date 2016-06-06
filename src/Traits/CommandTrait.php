@@ -19,7 +19,8 @@ trait CommandTrait {
      */
     protected function getPath($file_name, $packageName, $fileType, $pathPackage)
     {
-        $baseSrc = $pathPackage . '/' . $packageName . '/src';
+        $arVendor =  explode('\\', $packageName);
+        $baseSrc = $pathPackage . '/' . $arVendor[0].'/'.$arVendor[1].'/src';
         if ($fileType == 'controller') {
             $baseSrc = $baseSrc .'/Http/Controllers/' . $file_name . '.php';
         } elseif ($fileType == 'model') {

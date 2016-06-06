@@ -8,6 +8,7 @@ class GenerateController extends Generate
 {
     use CommandTrait;
     protected $object;
+    protected $files;
 
     function __construct(GenerateCommand $generateCommand, Filesystem $files)
     {
@@ -21,19 +22,27 @@ class GenerateController extends Generate
         return 'controller';
     }
 
+    public function className()
+    {
+        return $this->object->getObjName('Name') . 'Controller';
+    }
+
+    public function templatePath()
+    {
+        return __DIR__ . '/../../templates/src/Http/Controllers/Controller.template';
+    }
+
     public function start()
     {
-        // Cria o nome do arquivo do controller // TweetController
-        $name = $this->object->getObjName('Name') . 'Controller';
-        $packageName = $this->object->getObjName('Names');
-        $packagePath = $this->object->argument('dir');
-        // Verifica se o arquivo existe com o mesmo o nome
+        $name = $this->className();
+        $packageName = $this->object->option('namespace');
+        $packagePath = $this->object->option('dir');
+
         if ($this->files->exists($path = $this->getPath($name, $packageName, $this->typeName(), $packagePath))) {
             return $this->object->error($name . ' already exists!');
         }
         $this->makeFile($path);
-        // Cria a pasta caso nao exista
-        // Grava o arquivo
+
         $this->files->put($path, $this->compileTemplate());
         $this->object->info('Controller created successfully.');
     }
@@ -45,10 +54,10 @@ class GenerateController extends Generate
      */
     public function compileTemplate()
     {
-        $content = $this->files->get(__DIR__ . '/../../templates/src/Http/Controllers/Controller.template');
+        $content = $this->files->get($this->templatePath());
         $this->replaceClassName($content)
             ->replaceNameSpace($content)
-            ->replaceModelName($content);
+            ->replaceVariable($content);
         return $content;
     }
     /**
@@ -59,7 +68,7 @@ class GenerateController extends Generate
      */
     public function replaceClassName(&$content)
     {
-        $className = $this->object->getObjName('Name') . 'Controller';
+        $className = $this->className();
         $content = str_replace('{{class}}', $className, $content);
         return $this;
     }
@@ -71,19 +80,25 @@ class GenerateController extends Generate
      */
     public function replaceNameSpace(&$content)
     {
-        $nameSpace = $this->object->argument('namespace');
+        $nameSpace = $this->object->option('namespace');
         $content = str_replace('{{namespace}}', $nameSpace, $content);
         return $this;
     }
 
-    public function replaceModelName(&$content)
+    /**
+     * Renomeia o endereço do Model para o controller
+     *
+     * @param $stub
+     * @return $this
+     */
+    public function replaceVariable(&$content)
     {
-        $model_name_uc = $this->object->getObjName('Name');
-        $model_name = $this->object->getObjName('name');
-        $model_names = $this->object->getObjName('names');
-        $content = str_replace('{{model_name_class}}', $model_name_uc, $content);
-        $content = str_replace('{{model_name_var_sgl}}', $model_name, $content);
-        $content = str_replace('{{model_name_var}}', $model_names, $content);
+        $storeRequestClass = (new \Kun\Generator\Commands\GenerateStoreRequest($this->object, $this->files))->className();
+        $updateRequestClass = (new \Kun\Generator\Commands\GenerateUpdateRequest($this->object, $this->files))->className();
+        $modelClass = (new \Kun\Generator\Commands\GenerateModel($this->object, $this->files))->className();
+        $content = str_replace('{{modelClass}}', $modelClass, $content);
+        $content = str_replace('{{storeRequestClass}}', $storeRequestClass, $content);
+        $content = str_replace('{{updateRequestClass}}', $updateRequestClass, $content);
         return $this;
     }
 }

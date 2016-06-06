@@ -3,6 +3,10 @@
 namespace {{namespace}}\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Input;
+use {{namespace}}\Http\Requests\{{storeRequestClass}};
+use {{namespace}}\Http\Requests\{{updateRequestClass}};
+use {{namespace}}\Models\{{modelClass}};
 
 /**
  * Class {{class}}
@@ -15,35 +19,50 @@ class {{class}} extends Controller
      */
     public function index()
     {
+        $models = {{modelClass}}::browse([
+            'size' => Input::get('page.size', 10),
+            'number' => Input::get('page.number', 1),
+        ]);
 
+        return response()->json(models, 200);
     }
 
     /**
-     * @param  StoreUserRequest $request
+     * @param  {{storeRequestClass}} $request
      * @return mixed
      */
-    public function store(StoreUserRequest $request)
+    public function store({{storeRequestClass}} $request)
     {
+        $object = {{modelClass}}::create($request->all());
 
+        return response()->json($object, 201);
     }
 
     /**
      * @param  $id
-     * @param  UpdateUserRequest $request
+     * @param  {{updateRequestClass}} $request
      * @return mixed
      */
-    public function update($id, UpdateUserRequest $request)
+    public function update($id, {{updateRequestClass}} $request)
     {
+        $object = {{modelClass}}::findOrFail($id);
+        $object->update($request->all());
 
+        return response()->json($object, 200);
     }
 
     /**
      * @param  $id
-     * @param  DeleteUserRequest $request
+     * @param  $request
      * @return mixed
      */
-    public function destroy($id, DeleteUserRequest $request)
+    public function destroy($id, $request)
     {
+        $object = {{modelClass}}::findOrFail($id);
 
+        if ($object->delete()) {
+            return response()->json(null, 204);
+        }
+        return response()->json(null, 500);
     }
 }
