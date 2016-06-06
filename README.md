@@ -1,6 +1,10 @@
 # Laravel Generator
 
-[![Latest Stable Version](https://poser.pugx.org/kun391/laravel-generator/v/stable)](https://packagist.org/packages/kun391/laravel-generator) [![Total Downloads](https://poser.pugx.org/kun391/laravel-generator/downloads)](https://packagist.org/packages/kun391/laravel-generator) [![Latest Unstable Version](https://poser.pugx.org/kun391/laravel-generator/v/unstable)](https://packagist.org/packages/kun391/laravel-generator) [![License](https://poser.pugx.org/kun391/laravel-generator/license)](https://packagist.org/packages/kun391/laravel-generator)
+[![Build Status](https://travis-ci.org/kun391/laravel-generator.svg?branch=master)](https://travis-ci.org/kun391/laravel-generator)
+[![Latest Stable Version](https://poser.pugx.org/kun391/laravel-generator/v/stable)](https://packagist.org/packages/kun391/laravel-generator)
+[![Total Downloads](https://poser.pugx.org/kun391/laravel-generator/downloads)](https://packagist.org/packages/kun391/laravel-generator)
+[![Monthly Downloads](https://poser.pugx.org/kun391/laravel-generator/d/monthly)](https://packagist.org/packages/kun391/laravel-generator)
+[![Daily Downloads](https://poser.pugx.org/kun391/laravel-generator/d/daily)](https://packagist.org/packages/kun391/yii2-paypal)
 
 The package use to generate a module with JSONAPI spec.
 
