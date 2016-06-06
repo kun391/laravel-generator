@@ -20,9 +20,14 @@ class GenerateRoute {
         return 'route';
     }
 
+    public function templatePath()
+    {
+        return __DIR__ . '/../../templates/src/routes.template';
+    }
+
     public function compileTemplate()
     {
-        $content = $this->files->get(__DIR__ . '/../../templates/src/routes.template');
+        $content = $this->files->get($this->templatePath());
         $this->replaceVariable($content);
         return $content;
     }
@@ -37,7 +42,7 @@ class GenerateRoute {
     {
         $resources = $this->object->getObjName('names');
         $name = $this->object->getObjName('Name') . 'Controller';
-        $controllerPath = $this->object->argument('namespace') . '\Http\Controllers\\' . $name;
+        $controllerPath = $this->object->option('namespace') . '\Http\Controllers\\' . $name;
         $content = str_replace('{{controllerPath}}', $controllerPath, $content);
         $content = str_replace('{{resources}}', $resources, $content);
         return $this;
@@ -45,8 +50,8 @@ class GenerateRoute {
 
     public function start()
     {
-        $packageName = $this->object->getObjName('Names');
-        $packagePath = $this->object->argument('dir');
+        $packageName = $this->object->option('namespace');
+        $packagePath = $this->object->option('dir');
 
         $modelPath = $this->getPath('routes', $packageName, $this->typeName(), $packagePath);
 

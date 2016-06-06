@@ -12,7 +12,6 @@ class GenerateUpdateRequest extends Generate {
     {
         $this->files = $files;
         $this->object = $generateCommand;
-        $this->start();
     }
 
     public function typeName()
@@ -20,9 +19,19 @@ class GenerateUpdateRequest extends Generate {
         return 'request';
     }
 
+    public function className()
+    {
+        return $this->object->getObjName('Name') . 'UpdateRequest';
+    }
+
+    public function templatePath()
+    {
+        return __DIR__ . '/../../templates/src/Http/Requests/Request.template';
+    }
+
     public function compileTemplate()
     {
-        $content = $this->files->get(__DIR__ . '/../../templates/src/Http/Requests/Request.template');
+        $content = $this->files->get($this->templatePath());
         $this->replaceClassName($content)
             ->replaceNameSpace($content);
         return $content;
@@ -35,7 +44,7 @@ class GenerateUpdateRequest extends Generate {
      */
     public function replaceClassName(&$content)
     {
-        $className = $this->object->getObjName('Name') . 'UpdateRequest';
+        $className = $this->className();
         $content = str_replace('{{class}}', $className, $content);
         return $this;
     }
@@ -48,23 +57,23 @@ class GenerateUpdateRequest extends Generate {
      */
     public function replaceNameSpace(&$content)
     {
-        $nameSpace = $this->object->argument('namespace');
+        $nameSpace = $this->object->option('namespace');
         $content = str_replace('{{namespace}}', $nameSpace, $content);
         return $this;
     }
 
     public function start()
     {
-        $name = $this->object->getObjName('Name') . 'UpdateRequest';
-        $packageName = $this->object->getObjName('Names');
-        $packagePath = $this->object->argument('dir');
+        $name = $this->className();
+        $packageName = $this->object->option('namespace');
+        $packagePath = $this->object->option('dir');
 
         $modelPath = $this->getPath($name, $packageName, $this->typeName(), $packagePath);
 
         if (!$this->files->exists($modelPath)) {
             $this->makeFile($modelPath);
         }
-        $this->files->put($modelPath, $this->compileTemplate(__DIR__ . '/../../templates/src/Http/Requests/Request.template'));
-        $this->object->info('Model created successfully.');
+        $this->files->put($modelPath, $this->compileTemplate());
+        $this->object->info('Request created successfully.');
     }
 }

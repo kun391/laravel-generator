@@ -3,7 +3,6 @@
 namespace Kun\Generator\Commands;
 
 use Kun\Generator\Traits\CommandTrait;
-use Illuminate\Console\AppNamespaceDetectorTrait;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Composer;
@@ -18,25 +17,14 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 class GenerateCommand extends Command
 {
-    use AppNamespaceDetectorTrait, CommandTrait;
+    use CommandTrait;
     /**
      * The console command name!
      *
      * @var string
      */
     protected $name = 'generator:run';
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Create a modules with bootstrap 3';
-    /**
-     * Meta information for the requested migration.
-     *
-     * @var array
-     */
-    protected $meta;
+
     /**
      * @var Composer
      */
@@ -90,9 +78,8 @@ class GenerateCommand extends Command
         $this->makeConfig();
         $this->makeRoute();
         $this->makeProvider();
-        // $this->makeViewLayout();
-        // $this->makeViews();
-        $this->composer->dumpAutoloads();
+        $this->updateComposer();
+
     }
     /**
      * Generate the desired migration.
@@ -142,8 +129,6 @@ class GenerateCommand extends Command
     {
         return [
             ['name', InputArgument::REQUIRED, 'The name of the package. (Ex: Admins)'],
-            ['dir', InputArgument::REQUIRED, 'The directory of the package. (Ex: ./packages)'],
-            ['namespace', InputArgument::REQUIRED, 'The namespace of the package. (Ex: Kun/Generator)'],
         ];
     }
     /**
@@ -154,9 +139,34 @@ class GenerateCommand extends Command
     protected function getOptions()
     {
         return [
-            ['schema', 's', InputOption::VALUE_REQUIRED, 'Schema to generate scaffold files. (Ex: --schema="title:string")', null],
-            ['form', 'f', InputOption::VALUE_OPTIONAL, 'Use Illumintate/Html Form facade to generate input fields', false]
+            ['namespace', 'ns', InputOption::VALUE_REQUIRED, 'The namespace of the package. (Ex: Kun\Generator)'],
+            ['dir', 'di',InputOption::VALUE_REQUIRED, 'The directory of the package. (Ex: ./packages)'],
+            ['schema', 's', InputOption::VALUE_OPTIONAL, 'Schema to generate packages. (Ex: --schema="title:string")', null],
+            ['table', 't', InputOption::VALUE_OPTIONAL, 'Table name. (Ex: --table="admins")', null],
+            ['fillable', 'a', InputOption::VALUE_OPTIONAL, 'fields to show in model. (Ex: --fillable="id,status")', null],
         ];
+    }
+
+    protected function updateComposer()
+    {
+        $arVendor =  explode('\\', $this->option('namespace'));
+        $requirement = '"psr-4": {
+            "'.$arVendor[0].'\\\\'.$arVendor[1].'\\\\": "packages/'.$arVendor[0].'/'.$arVendor[1].'/src",';
+        $providerClass = 'Kun\Generator\GeneratorServiceProvider::class,
+        '.$arVendor[0].'\\'.$arVendor[1].'\\'.$arVendor[1].'ServiceProvider::class,';
+
+        $composer = $this->files->get(getcwd().'/composer.json');
+
+        if ($this->files->isDirectory(getcwd().'/config')) {
+            $appConfig = $this->files->get(getcwd().'/config/app.php');
+            $appConfig = str_replace('Kun\Generator\GeneratorServiceProvider::class,', $providerClass, $appConfig);
+            $this->files->put(getcwd().'/config/app.php', $appConfig);
+        }
+
+        $composer = str_replace('"psr-4": {', $requirement, $composer);
+        $this->files->put(getcwd().'/composer.json', $composer);
+        $this->info('Adding package to composer and app...');
+        $this->composer->dumpAutoloads();
     }
     /**
      * Make a Controller with default actions
@@ -171,8 +181,8 @@ class GenerateCommand extends Command
      */
     private function makeRequest()
     {
-        new GenerateStoreRequest($this, $this->files);
-        new GenerateUpdateRequest($this, $this->files);
+        (new GenerateStoreRequest($this, $this->files))->start();
+        (new GenerateUpdateRequest($this, $this->files))->start();
     }
     /**
      * Generate names
