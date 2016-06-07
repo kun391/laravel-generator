@@ -20,7 +20,6 @@
     ],
     "require": {
         "illuminate/support": "~5.2",
-        "laravelcollective/html": "5.2.*",
         "php" : "~5.5|~7.0"
     },
     "require-dev": {
