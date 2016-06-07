@@ -16,20 +16,20 @@ Via Composer
 $ composer require kun391/laravel-generator
 ```
 
-## Setup
-
-Add the following to your composer.json file :
+Or add the following to your composer.json file :
 ```
 "require": {
     "kun391/laravel-generator": "dev-master",
 },
+
+$ composer update
 ```
 
 Then register service provider with in config/app.php:
 ```
 'providers' => [
     ...
-    Kun\Categories\GeneratorServiceProvider::class,
+    Kun\Generator\GeneratorServiceProvider::class,
 ]
 ```
 
@@ -47,7 +47,7 @@ and add alias Input to aliases
 Run this command with format:
 
 ```
-    php artisan generate:run events --dir='./packages' --namespace='Kun\Events'
+php artisan generator:run events --dir='./packages' --namespace='Kun\Events'
 ```
 
 ## Change log
