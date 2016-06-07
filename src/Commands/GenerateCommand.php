@@ -67,9 +67,6 @@ class GenerateCommand extends Command
         $this->info('Command generator:run fire');
         // Start Scaffold
         $this->info('Configuring ' . $this->getObjName("Name") . '...');
-        $this->meta['action'] = 'create';
-        $this->meta['var_name'] = $this->getObjName("name");
-        $this->meta['table'] = $this->getObjName("names"); // Store table name
         // Generate files
         $this->makeController();
         $this->makeModel();
@@ -150,22 +147,31 @@ class GenerateCommand extends Command
     protected function updateComposer()
     {
         $arVendor =  explode('\\', $this->option('namespace'));
+        $currentComposer = $arVendor[0].'\\\\'.$arVendor[1].'\\\\": "packages/'.$arVendor[0].'/'.$arVendor[1].'/src",';
         $requirement = '"psr-4": {
-            "'.$arVendor[0].'\\\\'.$arVendor[1].'\\\\": "packages/'.$arVendor[0].'/'.$arVendor[1].'/src",';
+            "'.$currentComposer;
+
+        $currentProvider = $arVendor[0].'\\'.$arVendor[1].'\\'.$this->getObjName('Name').'ServiceProvider::class,';
         $providerClass = 'Kun\Generator\GeneratorServiceProvider::class,
-        '.$arVendor[0].'\\'.$arVendor[1].'\\'.$arVendor[1].'ServiceProvider::class,';
+        '.$currentProvider;
 
         $composer = $this->files->get(getcwd().'/composer.json');
 
         if ($this->files->isDirectory(getcwd().'/config')) {
             $appConfig = $this->files->get(getcwd().'/config/app.php');
-            $appConfig = str_replace('Kun\Generator\GeneratorServiceProvider::class,', $providerClass, $appConfig);
-            $this->files->put(getcwd().'/config/app.php', $appConfig);
+
+            if (strpos($appConfig, $currentProvider) === false) {
+                $appConfig = str_replace('Kun\Generator\GeneratorServiceProvider::class,', $providerClass, $appConfig);
+                $this->files->put(getcwd().'/config/app.php', $appConfig);
+            }
+
         }
 
-        $composer = str_replace('"psr-4": {', $requirement, $composer);
-        $this->files->put(getcwd().'/composer.json', $composer);
-        $this->info('Adding package to composer and app...');
+        if (strpos($composer, $currentComposer) === false) {
+            $composer = str_replace('"psr-4": {', $requirement, $composer);
+            $this->files->put(getcwd().'/composer.json', $composer);
+            $this->info('Adding package to composer and app...');
+        }
         $this->composer->dumpAutoloads();
     }
     /**
